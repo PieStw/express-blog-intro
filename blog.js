@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const port = 3000;
 
+app.use(express.static("public"));
 
 app.get("/", (req, res) => {
     res.send("Server del mio Blog");
@@ -19,11 +20,14 @@ app.get("/bacheca", (req, res) => {
 
     const tag = req.query.tag;
 
-    const newPosts = posts.filter((post) => {
-        return post.tags.includes(tag.toLowerCase())
-    })
-
-    res.json({posts: newPosts, numeroElementi: newPosts.length});
+    if(tag){
+        const newPosts = posts.filter((post) => {
+            return post.tags.includes(tag.toLowerCase())
+        })
+    
+        res.json({posts: newPosts, numeroElementi: newPosts.length});
+    }
+    else res.json({posts: posts, numeroElementi: posts.length});
 });
 
 
